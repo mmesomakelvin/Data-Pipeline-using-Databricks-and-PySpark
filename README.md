@@ -168,6 +168,42 @@ The Silver script:
 
 Stage 5 has been tested locally. The first Silver transformation processed `sales_2010_12.csv`, read 42,481 Bronze rows, and wrote 41,480 cleaned Silver rows. Rerunning the script confirms that the same source file is not transformed twice.
 
+## Stage 6: Gold Aggregations
+
+Gold is the business-ready reporting layer. It aggregates the clean Silver data into the outputs needed for dashboards and business questions.
+
+Preview Gold table row counts:
+
+```powershell
+python .\src\build_gold.py --dry-run
+```
+
+Build the local Gold outputs:
+
+```powershell
+python .\src\build_gold.py
+```
+
+Local Gold outputs:
+
+```text
+data/gold/weekly_revenue.csv
+data/gold/top_5_products_by_revenue.csv
+data/gold/top_5_customers_by_revenue.csv
+data/gold/revenue_by_country.csv
+```
+
+The Gold outputs answer:
+
+- weekly revenue
+- top five products by revenue
+- top five customers by revenue
+- total revenue by country
+
+For the top-products output, known service and fee stock codes such as `DOT`, `POST`, and `AMAZONFEE` are excluded so the result focuses on actual products.
+
+Stage 6 has been tested locally using the first Silver batch. It read 41,480 Silver rows and created four Gold outputs: 4 weekly revenue rows, 5 top-product rows, 5 top-customer rows, and 23 country revenue rows.
+
 ## Planned Workflow
 
 1. Download the Online Retail dataset from the UCI Machine Learning Repository.
@@ -210,4 +246,4 @@ python -c "import pyspark; print(pyspark.__version__)"
 
 ## Project Status
 
-Local environment setup is complete. A Spark 4.1.2 session has been tested successfully with Python 3.14 and Java 21. Stage 2 prepared the reproducible monthly archive files from the source dataset. Stage 3 simulated the first file arrival by moving `sales_2010_12.csv` into `landing/`. Stage 4 loaded that file into the local Bronze output with duplicate protection. Stage 5 cleaned and typed the Bronze data into the local Silver output. Pipeline implementation will be added incrementally as each stage is developed and tested.
+Local environment setup is complete. A Spark 4.1.2 session has been tested successfully with Python 3.14 and Java 21. Stage 2 prepared the reproducible monthly archive files from the source dataset. Stage 3 simulated the first file arrival by moving `sales_2010_12.csv` into `landing/`. Stage 4 loaded that file into the local Bronze output with duplicate protection. Stage 5 cleaned and typed the Bronze data into the local Silver output. Stage 6 created the local Gold business aggregations for dashboard reporting. Pipeline implementation will be added incrementally as each stage is developed and tested.
