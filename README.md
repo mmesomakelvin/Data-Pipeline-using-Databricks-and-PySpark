@@ -223,6 +223,27 @@ The runner executes these scripts in order:
 
 Stage 7 has been tested locally with the second monthly file, `sales_2011_01.csv`. After the run, Bronze contained 77,628 rows, Silver contained 75,786 rows, weekly Gold contained 9 rows, and country Gold contained 28 rows.
 
+## Stage 8: Databricks Notebook Sources
+
+The local scripts now have Databricks notebook source equivalents in `notebooks/`.
+
+```text
+notebooks/01_move_next_file.py
+notebooks/02_bronze_ingestion.py
+notebooks/03_silver_transformation.py
+notebooks/04_gold_aggregations.py
+notebooks/05_run_workflow.py
+```
+
+These notebooks use DBFS paths, Delta tables, and `dbutils`, which are available inside Databricks. The recommended Databricks Workflow task order is:
+
+1. `01_move_next_file`
+2. `02_bronze_ingestion`
+3. `03_silver_transformation`
+4. `04_gold_aggregations`
+
+The optional `05_run_workflow` notebook can run the same sequence manually, but the final project should show a Databricks Workflow screenshot.
+
 ## Planned Workflow
 
 1. Download the Online Retail dataset from the UCI Machine Learning Repository.
@@ -265,4 +286,4 @@ python -c "import pyspark; print(pyspark.__version__)"
 
 ## Project Status
 
-Local environment setup is complete. A Spark 4.1.2 session has been tested successfully with Python 3.14 and Java 21. Stage 2 prepared the reproducible monthly archive files from the source dataset. Stage 3 simulated file arrival by moving monthly files into `landing/`. Stage 4 loaded landed files into the local Bronze output with duplicate protection. Stage 5 cleaned and typed Bronze data into the local Silver output. Stage 6 created the local Gold business aggregations for dashboard reporting. Stage 7 added and tested a single-command local pipeline runner. Pipeline implementation will be added incrementally as each stage is developed and tested.
+Local environment setup is complete. A Spark 4.1.2 session has been tested successfully with Python 3.14 and Java 21. Stage 2 prepared the reproducible monthly archive files from the source dataset. Stage 3 simulated file arrival by moving monthly files into `landing/`. Stage 4 loaded landed files into the local Bronze output with duplicate protection. Stage 5 cleaned and typed Bronze data into the local Silver output. Stage 6 created the local Gold business aggregations for dashboard reporting. Stage 7 added and tested a single-command local pipeline runner. Stage 8 added Databricks notebook source files for the workflow implementation.
