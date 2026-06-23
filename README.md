@@ -85,6 +85,30 @@ Stage 2 has been run locally and produced 13 monthly archive files with 541,909 
 
 On Windows, Spark may print `winutils.exe` warnings during local runs. For this project step, those warnings are acceptable as long as the script finishes and creates the monthly CSV files.
 
+## Stage 3: Simulate File Arrival
+
+The pipeline is incremental, so it should not process every archive file at once. Stage 3 simulates an hourly scheduled job by moving the next monthly CSV file from `archives/` into `landing/`.
+
+Preview the next file movement:
+
+```powershell
+python .\src\move_next_archive_to_landing.py --dry-run
+```
+
+Move the next file:
+
+```powershell
+python .\src\move_next_archive_to_landing.py
+```
+
+After the first run, `landing/` should contain:
+
+```text
+landing/sales_2010_12.csv
+```
+
+Stage 3 has been tested locally. The first simulated arrival moved `sales_2010_12.csv` into `landing/`, leaving 12 monthly files in `archives/`.
+
 ## Planned Workflow
 
 1. Download the Online Retail dataset from the UCI Machine Learning Repository.
@@ -127,4 +151,4 @@ python -c "import pyspark; print(pyspark.__version__)"
 
 ## Project Status
 
-Local environment setup is complete. A Spark 4.1.2 session has been tested successfully with Python 3.14 and Java 21. Stage 2 has prepared the reproducible monthly archive files from the source dataset. Pipeline implementation will be added incrementally as each stage is developed and tested.
+Local environment setup is complete. A Spark 4.1.2 session has been tested successfully with Python 3.14 and Java 21. Stage 2 prepared the reproducible monthly archive files from the source dataset. Stage 3 simulated the first file arrival by moving `sales_2010_12.csv` into `landing/`. Pipeline implementation will be added incrementally as each stage is developed and tested.
