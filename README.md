@@ -81,6 +81,10 @@ archives/sales_2011_01.csv
 archives/sales_2011_12.csv
 ```
 
+Stage 2 has been run locally and produced 13 monthly archive files with 541,909 total rows. The generated `archives/` files are intentionally ignored by Git because they are reproducible data outputs.
+
+On Windows, Spark may print `winutils.exe` warnings during local runs. For this project step, those warnings are acceptable as long as the script finishes and creates the monthly CSV files.
+
 ## Planned Workflow
 
 1. Download the Online Retail dataset from the UCI Machine Learning Repository.
@@ -123,4 +127,4 @@ python -c "import pyspark; print(pyspark.__version__)"
 
 ## Project Status
 
-Local environment setup is complete. A Spark 4.1.2 session has been tested successfully with Python 3.14 and Java 21. Pipeline implementation will be added incrementally as each stage is developed and tested.
+Local environment setup is complete. A Spark 4.1.2 session has been tested successfully with Python 3.14 and Java 21. Stage 2 has prepared the reproducible monthly archive files from the source dataset. Pipeline implementation will be added incrementally as each stage is developed and tested.

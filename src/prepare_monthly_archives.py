@@ -31,8 +31,9 @@ def convert_excel_to_csv() -> None:
 
 
 def create_spark_session() -> SparkSession:
-    os.environ["PYSPARK_PYTHON"] = sys.executable
-    os.environ["PYSPARK_DRIVER_PYTHON"] = sys.executable
+    python_command = sys.executable if " " not in sys.executable else "python"
+    os.environ["PYSPARK_PYTHON"] = python_command
+    os.environ["PYSPARK_DRIVER_PYTHON"] = python_command
 
     return (
         SparkSession.builder.appName("prepare-monthly-archives")
