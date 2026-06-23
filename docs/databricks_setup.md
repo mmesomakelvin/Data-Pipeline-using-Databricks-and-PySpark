@@ -123,6 +123,12 @@ Create a Databricks SQL dashboard with four visualizations:
 3. Top five customers by revenue from `gold_top_5_customers_by_revenue`
 4. Revenue by country from `gold_revenue_by_country`
 
+Reusable SQL queries are available in:
+
+```text
+docs/sql/
+```
+
 Good chart choices:
 
 - line chart for weekly revenue

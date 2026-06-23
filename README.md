@@ -254,6 +254,16 @@ docs/databricks_setup.md
 
 It covers notebook import, DBFS upload paths, Workflow task order, table validation SQL, dashboard requirements, and the screenshots needed for final submission.
 
+## Stage 10: Databricks SQL Dashboard Queries
+
+Dashboard SQL queries are available in:
+
+```text
+docs/sql/
+```
+
+These queries are designed for Databricks SQL and read from the Gold Delta tables. PostgreSQL is not required.
+
 ## Planned Workflow
 
 1. Download the Online Retail dataset from the UCI Machine Learning Repository.
@@ -296,4 +306,4 @@ python -c "import pyspark; print(pyspark.__version__)"
 
 ## Project Status
 
-Local environment setup is complete. A Spark 4.1.2 session has been tested successfully with Python 3.14 and Java 21. Stage 2 prepared the reproducible monthly archive files from the source dataset. Stage 3 simulated file arrival by moving monthly files into `landing/`. Stage 4 loaded landed files into the local Bronze output with duplicate protection. Stage 5 cleaned and typed Bronze data into the local Silver output. Stage 6 created the local Gold business aggregations for dashboard reporting. Stage 7 added and tested a single-command local pipeline runner. Stage 8 added Databricks notebook source files for the workflow implementation. Stage 9 added the Databricks setup guide for deployment, validation, and final evidence collection.
+Local environment setup is complete. A Spark 4.1.2 session has been tested successfully with Python 3.14 and Java 21. Stage 2 prepared the reproducible monthly archive files from the source dataset. Stage 3 simulated file arrival by moving monthly files into `landing/`. Stage 4 loaded landed files into the local Bronze output with duplicate protection. Stage 5 cleaned and typed Bronze data into the local Silver output. Stage 6 created the local Gold business aggregations for dashboard reporting. Stage 7 added and tested a single-command local pipeline runner. Stage 8 added Databricks notebook source files for the workflow implementation. Stage 9 added the Databricks setup guide for deployment, validation, and final evidence collection. Stage 10 added Databricks SQL dashboard queries.
