@@ -47,6 +47,40 @@ Databricks SQL dashboard
 - Spark SQL
 - Git and GitHub
 
+## Project Structure
+
+```text
+.
+|-- src/                 # Local PySpark scripts
+|-- notebooks/           # Databricks notebook source files
+|-- docs/
+|   `-- screenshots/     # Workflow, pipeline run, and dashboard evidence
+|-- requirements.txt     # Local Python dependencies
+|-- .gitignore           # Files excluded from version control
+`-- README.md            # Project documentation
+```
+
+Local datasets, landing files, checkpoints, and Spark-generated files are excluded from Git.
+
+## Stage 2: Prepare Monthly Archives
+
+The raw UCI file is downloaded as an Excel workbook. Locally, the project first converts that workbook into a CSV file and then uses PySpark to split the dataset into monthly archive files.
+
+Run the Stage 2 script from the project root:
+
+```powershell
+python .\src\prepare_monthly_archives.py
+```
+
+Expected output files:
+
+```text
+archives/sales_2010_12.csv
+archives/sales_2011_01.csv
+...
+archives/sales_2011_12.csv
+```
+
 ## Planned Workflow
 
 1. Download the Online Retail dataset from the UCI Machine Learning Repository.
@@ -67,10 +101,10 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-Install PySpark:
+Install project dependencies:
 
 ```powershell
-python -m pip install pyspark==4.1.2
+python -m pip install -r requirements.txt
 ```
 
 Confirm the installed version:
