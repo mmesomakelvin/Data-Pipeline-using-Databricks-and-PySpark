@@ -109,6 +109,32 @@ landing/sales_2010_12.csv
 
 Stage 3 has been tested locally. The first simulated arrival moved `sales_2010_12.csv` into `landing/`, leaving 12 monthly files in `archives/`.
 
+## Stage 4: Bronze Ingestion
+
+Bronze is the raw ingestion layer. It stores the landed sales rows with audit columns so we know which file each row came from and when it was loaded.
+
+Preview new landing files before ingestion:
+
+```powershell
+python .\src\ingest_bronze.py --dry-run
+```
+
+Ingest new landing files into the local Bronze output:
+
+```powershell
+python .\src\ingest_bronze.py
+```
+
+Local Bronze output:
+
+```text
+data/bronze/online_retail_bronze.csv
+```
+
+The script uses `checkpoints/bronze_processed_files.txt` to avoid ingesting the same landing file twice.
+
+Stage 4 has been tested locally. The first Bronze ingestion loaded `sales_2010_12.csv` with 42,481 rows, wrote audit columns `_source_file` and `_ingested_at_utc`, and confirmed that rerunning the script does not reprocess the same file.
+
 ## Planned Workflow
 
 1. Download the Online Retail dataset from the UCI Machine Learning Repository.
@@ -151,4 +177,4 @@ python -c "import pyspark; print(pyspark.__version__)"
 
 ## Project Status
 
-Local environment setup is complete. A Spark 4.1.2 session has been tested successfully with Python 3.14 and Java 21. Stage 2 prepared the reproducible monthly archive files from the source dataset. Stage 3 simulated the first file arrival by moving `sales_2010_12.csv` into `landing/`. Pipeline implementation will be added incrementally as each stage is developed and tested.
+Local environment setup is complete. A Spark 4.1.2 session has been tested successfully with Python 3.14 and Java 21. Stage 2 prepared the reproducible monthly archive files from the source dataset. Stage 3 simulated the first file arrival by moving `sales_2010_12.csv` into `landing/`. Stage 4 loaded that file into the local Bronze output with duplicate protection. Pipeline implementation will be added incrementally as each stage is developed and tested.
