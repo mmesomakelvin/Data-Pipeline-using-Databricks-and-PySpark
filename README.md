@@ -244,6 +244,16 @@ These notebooks use DBFS paths, Delta tables, and `dbutils`, which are available
 
 The optional `05_run_workflow` notebook can run the same sequence manually, but the final project should show a Databricks Workflow screenshot.
 
+## Stage 9: Databricks Setup Guide
+
+The Databricks deployment guide is available at:
+
+```text
+docs/databricks_setup.md
+```
+
+It covers notebook import, DBFS upload paths, Workflow task order, table validation SQL, dashboard requirements, and the screenshots needed for final submission.
+
 ## Planned Workflow
 
 1. Download the Online Retail dataset from the UCI Machine Learning Repository.
@@ -286,4 +296,4 @@ python -c "import pyspark; print(pyspark.__version__)"
 
 ## Project Status
 
-Local environment setup is complete. A Spark 4.1.2 session has been tested successfully with Python 3.14 and Java 21. Stage 2 prepared the reproducible monthly archive files from the source dataset. Stage 3 simulated file arrival by moving monthly files into `landing/`. Stage 4 loaded landed files into the local Bronze output with duplicate protection. Stage 5 cleaned and typed Bronze data into the local Silver output. Stage 6 created the local Gold business aggregations for dashboard reporting. Stage 7 added and tested a single-command local pipeline runner. Stage 8 added Databricks notebook source files for the workflow implementation.
+Local environment setup is complete. A Spark 4.1.2 session has been tested successfully with Python 3.14 and Java 21. Stage 2 prepared the reproducible monthly archive files from the source dataset. Stage 3 simulated file arrival by moving monthly files into `landing/`. Stage 4 loaded landed files into the local Bronze output with duplicate protection. Stage 5 cleaned and typed Bronze data into the local Silver output. Stage 6 created the local Gold business aggregations for dashboard reporting. Stage 7 added and tested a single-command local pipeline runner. Stage 8 added Databricks notebook source files for the workflow implementation. Stage 9 added the Databricks setup guide for deployment, validation, and final evidence collection.
