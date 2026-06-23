@@ -135,6 +135,39 @@ The script uses `checkpoints/bronze_processed_files.txt` to avoid ingesting the 
 
 Stage 4 has been tested locally. The first Bronze ingestion loaded `sales_2010_12.csv` with 42,481 rows, wrote audit columns `_source_file` and `_ingested_at_utc`, and confirmed that rerunning the script does not reprocess the same file.
 
+## Stage 5: Silver Transformation
+
+Silver is the cleaned and typed layer. It converts raw Bronze strings into useful data types, removes invalid sales rows, and calculates revenue.
+
+Preview new Bronze files before Silver transformation:
+
+```powershell
+python .\src\transform_silver.py --dry-run
+```
+
+Transform new Bronze rows into the local Silver output:
+
+```powershell
+python .\src\transform_silver.py
+```
+
+Local Silver output:
+
+```text
+data/silver/online_retail_silver.csv
+```
+
+The Silver script:
+
+- converts `Quantity` to integer
+- converts `UnitPrice` to decimal
+- converts `InvoiceDate` to `InvoiceTimestamp`
+- removes cancellation invoices and non-positive sales rows
+- creates `Revenue = Quantity * UnitPrice`
+- uses `checkpoints/silver_processed_files.txt` to avoid transforming the same source file twice
+
+Stage 5 has been tested locally. The first Silver transformation processed `sales_2010_12.csv`, read 42,481 Bronze rows, and wrote 41,480 cleaned Silver rows. Rerunning the script confirms that the same source file is not transformed twice.
+
 ## Planned Workflow
 
 1. Download the Online Retail dataset from the UCI Machine Learning Repository.
@@ -177,4 +210,4 @@ python -c "import pyspark; print(pyspark.__version__)"
 
 ## Project Status
 
-Local environment setup is complete. A Spark 4.1.2 session has been tested successfully with Python 3.14 and Java 21. Stage 2 prepared the reproducible monthly archive files from the source dataset. Stage 3 simulated the first file arrival by moving `sales_2010_12.csv` into `landing/`. Stage 4 loaded that file into the local Bronze output with duplicate protection. Pipeline implementation will be added incrementally as each stage is developed and tested.
+Local environment setup is complete. A Spark 4.1.2 session has been tested successfully with Python 3.14 and Java 21. Stage 2 prepared the reproducible monthly archive files from the source dataset. Stage 3 simulated the first file arrival by moving `sales_2010_12.csv` into `landing/`. Stage 4 loaded that file into the local Bronze output with duplicate protection. Stage 5 cleaned and typed the Bronze data into the local Silver output. Pipeline implementation will be added incrementally as each stage is developed and tested.
