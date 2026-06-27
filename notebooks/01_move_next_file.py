@@ -3,7 +3,9 @@
 
 # COMMAND ----------
 
-dbutils.widgets.text("base_path", "dbfs:/FileStore/online_retail_pipeline")
+# Default path for Databricks Free Edition using Unity Catalog volumes.
+# Override this widget if your Databricks workspace uses a different storage path.
+dbutils.widgets.text("base_path", "/Volumes/workspace/default/online_retail_pipeline")
 
 base_path = dbutils.widgets.get("base_path").rstrip("/")
 archives_path = f"{base_path}/archives"

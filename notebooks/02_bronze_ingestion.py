@@ -7,7 +7,9 @@ from pyspark.sql import functions as F
 from pyspark.sql.types import StringType, StructField, StructType
 
 
-dbutils.widgets.text("base_path", "dbfs:/FileStore/online_retail_pipeline")
+# Default path for Databricks Free Edition using Unity Catalog volumes.
+# Override this widget if your Databricks workspace uses a different storage path.
+dbutils.widgets.text("base_path", "/Volumes/workspace/default/online_retail_pipeline")
 dbutils.widgets.text("database", "online_retail_pipeline")
 
 base_path = dbutils.widgets.get("base_path").rstrip("/")
@@ -65,7 +67,7 @@ bronze_df = (
     spark.read.option("header", True)
     .schema(schema)
     .csv(new_file_paths)
-    .withColumn("_source_path", F.input_file_name())
+    .withColumn("_source_path", F.col("_metadata.file_path"))
     .withColumn("_source_file", F.regexp_extract("_source_path", r"([^/]+)$", 1))
     .withColumn("_ingested_at_utc", F.current_timestamp())
     .drop("_source_path")

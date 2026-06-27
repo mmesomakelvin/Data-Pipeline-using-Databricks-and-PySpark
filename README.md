@@ -51,6 +51,7 @@ Databricks SQL dashboard
 
 ```text
 .
+|-- Dashboard/            # Exported Databricks dashboard visual screenshots
 |-- src/                 # Local PySpark scripts
 |-- notebooks/           # Databricks notebook source files
 |-- docs/
@@ -235,7 +236,7 @@ notebooks/04_gold_aggregations.py
 notebooks/05_run_workflow.py
 ```
 
-These notebooks use DBFS paths, Delta tables, and `dbutils`, which are available inside Databricks. The recommended Databricks Workflow task order is:
+These notebooks use Databricks volume paths, Delta tables, and `dbutils`, which are available inside Databricks. Local scripts in `src/` still use local project folders and are separate from the Databricks notebook paths. The recommended Databricks Workflow task order is:
 
 1. `01_move_next_file`
 2. `02_bronze_ingestion`
@@ -252,7 +253,7 @@ The Databricks deployment guide is available at:
 docs/databricks_setup.md
 ```
 
-It covers notebook import, DBFS upload paths, Workflow task order, table validation SQL, dashboard requirements, and the screenshots needed for final submission.
+It covers notebook import, Unity Catalog volume upload paths, Workflow task order, table validation SQL, dashboard requirements, and the screenshots needed for final submission.
 
 ## Stage 10: Databricks SQL Dashboard Queries
 
@@ -273,6 +274,32 @@ docs/submission_checklist.md
 ```
 
 It lists completed GitHub work, remaining Databricks tasks, required screenshots, final validation queries, and final submission checks.
+
+## Stage 12: First Databricks Dashboard Evidence
+
+The first Databricks run has been completed with one monthly file, `sales_2010_12.csv`, processed through Bronze, Silver, and Gold.
+
+Validation results from Databricks SQL:
+
+```text
+Bronze rows: 42,481
+Silver rows: 41,480
+Weekly revenue rows: 4
+Revenue by country rows: 23
+Top products rows: 5
+Top customers rows: 5
+```
+
+Four dashboard visual exports are saved in the `Dashboard/` folder:
+
+```text
+Dashboard/Country by Total Revenue.png
+Dashboard/Customer ID by Total Revenue.png
+Dashboard/Product Description by Total Revenue.png
+Dashboard/Weekly start date by weekly revenue.png
+```
+
+These images show the first-run Gold reporting outputs for revenue by country, top customers, top products, and weekly revenue. The next Databricks step is to run additional incremental cycles so the row counts and dashboard update as more monthly files move from `archives/` into `landing/`.
 
 ## Planned Workflow
 
@@ -316,4 +343,4 @@ python -c "import pyspark; print(pyspark.__version__)"
 
 ## Project Status
 
-Local environment setup is complete. A Spark 4.1.2 session has been tested successfully with Python 3.14 and Java 21. Stage 2 prepared the reproducible monthly archive files from the source dataset. Stage 3 simulated file arrival by moving monthly files into `landing/`. Stage 4 loaded landed files into the local Bronze output with duplicate protection. Stage 5 cleaned and typed Bronze data into the local Silver output. Stage 6 created the local Gold business aggregations for dashboard reporting. Stage 7 added and tested a single-command local pipeline runner. Stage 8 added Databricks notebook source files for the workflow implementation. Stage 9 added the Databricks setup guide for deployment, validation, and final evidence collection. Stage 10 added Databricks SQL dashboard queries. Stage 11 added the final submission checklist.
+Local environment setup is complete. A Spark 4.1.2 session has been tested successfully with Python 3.14 and Java 21. Stage 2 prepared the reproducible monthly archive files from the source dataset. Stage 3 simulated file arrival by moving monthly files into `landing/`. Stage 4 loaded landed files into the local Bronze output with duplicate protection. Stage 5 cleaned and typed Bronze data into the local Silver output. Stage 6 created the local Gold business aggregations for dashboard reporting. Stage 7 added and tested a single-command local pipeline runner. Stage 8 added Databricks notebook source files for the workflow implementation. Stage 9 added the Databricks setup guide for deployment, validation, and final evidence collection. Stage 10 added Databricks SQL dashboard queries. Stage 11 added the final submission checklist. Stage 12 captured the first Databricks SQL dashboard evidence after one successful incremental run.

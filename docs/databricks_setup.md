@@ -30,16 +30,16 @@ The local Stage 2 script creates monthly files in:
 archives/
 ```
 
-Upload those files to this DBFS path:
+Upload those files to this Unity Catalog volume path:
 
 ```text
-dbfs:/FileStore/online_retail_pipeline/archives/
+/Volumes/workspace/default/online_retail_pipeline/archives/
 ```
 
-Create the landing folder:
+Create the landing folder in the same volume:
 
 ```text
-dbfs:/FileStore/online_retail_pipeline/landing/
+/Volumes/workspace/default/online_retail_pipeline/landing/
 ```
 
 After upload, the archive folder should contain files like:
@@ -57,11 +57,11 @@ sales_2011_12.csv
 Use these values in the Databricks Workflow task parameters:
 
 ```text
-base_path = dbfs:/FileStore/online_retail_pipeline
+base_path = /Volumes/workspace/default/online_retail_pipeline
 database = online_retail_pipeline
 ```
 
-`base_path` controls where the archive and landing files live.
+`base_path` controls where the archive and landing files live in Databricks. The local `src/` scripts are separate and continue to use local project folders such as `archives/` and `landing/`.
 
 `database` controls where Delta tables are created.
 
@@ -94,6 +94,8 @@ online_retail_pipeline.gold_revenue_by_country
 ```
 
 Bronze and Silver use processed-file tables to avoid processing the same source file twice.
+
+Unity Catalog volumes expose file metadata through `_metadata.file_path`. The Bronze notebook uses this instead of `input_file_name()`, which is not supported in Unity Catalog.
 
 Gold tables are rebuilt from the latest Silver table after every successful workflow run.
 
@@ -159,7 +161,7 @@ Do not commit private credentials, Databricks tokens, or workspace secrets.
 If `01_move_next_file` says no archive files are left, check that files exist in:
 
 ```text
-dbfs:/FileStore/online_retail_pipeline/archives/
+/Volumes/workspace/default/online_retail_pipeline/archives/
 ```
 
 If Bronze or Silver says there are no new files, check the processed-file tables:
